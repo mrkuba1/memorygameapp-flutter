@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:memorygameapp/models/card_item.dart';
 import 'package:memorygameapp/models/game.dart';
 import 'package:memorygameapp/ui/widgets/game_button.dart';
+import 'package:memorygameapp/ui/widgets/game_score.dart';
 import 'package:memorygameapp/ui/widgets/game_timer.dart';
 import 'package:memorygameapp/ui/widgets/memory_card.dart';
 
@@ -37,6 +39,12 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
+  startScoring() {
+    setState(() {
+      game!.score = game!.score + 1;
+    });
+  }
+
   void _resetGame() {
     game!.resetGame();
     setState(() {
@@ -55,19 +63,30 @@ class _GamePageState extends State<GamePage> {
         child: Column(
           children: [
             Expanded(
-              flex: 1,
-              child: GameTimer(
-                timer: game!.time,
-              ),
-            ),
+                flex: 1,
+                child: Center(
+                    child: Row(
+                  children: [
+                    GameTimer(
+                      timer: game!.time,
+                    ),
+                    GameScore(score: game!.score)
+                  ],
+                ))),
             Expanded(
+              flex: 3,
               child: GridView.count(
                 crossAxisCount: game!.gridSize,
-                children: List.generate(game!.gridSize, (index) {
+                children: List.generate(game!.cards.length, (index) {
                   return MemoryCard(
                     index: index,
                     cardItem: game!.cards[index],
-                    onCardPressed: game!.onCardPressed,
+                    onCardPressed: (int index) {
+                      if (game!.cards[index].state == CardState.hidden) {
+                        startScoring();
+                      }
+                      game!.onCardPressed(index);
+                    },
                   );
                 }),
               ),

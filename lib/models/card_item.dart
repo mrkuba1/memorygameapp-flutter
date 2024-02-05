@@ -14,7 +14,7 @@ class CardItem {
   IconData get icon {
     switch (value) {
       case 1:
-        return Icons.apple;
+        return Icons.man;
       case 2:
         return Icons.fastfood;
       case 3:
@@ -39,7 +39,7 @@ class CardItem {
       case 1:
         return Colors.black;
       case 2:
-        return Colors.white;
+        return Colors.amber;
       case 3:
         return Colors.yellow;
       case 4:

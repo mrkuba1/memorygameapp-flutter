@@ -7,6 +7,7 @@ class Game {
   List<CardItem> cards = [];
   bool isGameOver = false;
   int time = 0;
+  int score = 0;
 
   Game(this.gridSize) {
     generateCards();
@@ -14,9 +15,8 @@ class Game {
 
   void generateCards() {
     cards = [];
-    for (int i = 0; i < gridSize * gridSize / 2; i++) {
+    for (int i = 0; i < (gridSize * gridSize) / 2; i++) {
       int cardValue = i + 1;
-
       cards.add(CardItem(
         cardValue,
         state: CardState.hidden,
@@ -33,6 +33,7 @@ class Game {
     generateCards();
     isGameOver = false;
     time = 0;
+    score = 0;
   }
 
   void onCardPressed(int index) {
@@ -42,6 +43,7 @@ class Game {
     if (selectedCardIndexes.length == 2) {
       CardItem card1 = cards[selectedCardIndexes[0]];
       CardItem card2 = cards[selectedCardIndexes[1]];
+
       if (card1.value == card2.value) {
         card1.state = CardState.guessed;
         card2.state = CardState.guessed;
@@ -57,6 +59,7 @@ class Game {
 
   List<int> _getSelectedCardIndexes() {
     List<int> selectedCardIndexes = [];
+
     for (int i = 0; i < cards.length; i++) {
       if (cards[i].state == CardState.visiable) {
         selectedCardIndexes.add(i);
@@ -68,9 +71,9 @@ class Game {
   bool _isGameOver() {
     for (int i = 0; i < cards.length; i++) {
       if (cards[i].state == CardState.hidden) {
-        return true;
+        return false;
       }
     }
-    return false;
+    return true;
   }
 }
